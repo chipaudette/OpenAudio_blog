@@ -25,7 +25,7 @@ void setup() {
   
   // initialize both serial ports:
   Serial.begin(115200);
-  Serial1.begin(115200);
+  Serial1.begin(9600); //2*115200 for BT Classic Module?  9600 for BLE?
 
   delay(500);
   Serial.println("MultiSerial_BT: USB Serial starting...");
