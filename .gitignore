@@ -1,3 +1,8 @@
+
+# manually excepted files
+2016-11-20 Basic Hearing Aid/Video/*
+
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
