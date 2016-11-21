@@ -46,13 +46,13 @@ void setup() {
 
   // Audio connections require memory, and the record queue
   // uses this memory to buffer incoming audio.
-  AudioMemory(60);
+  AudioMemory(20);
 
   // Enable the audio shield, select input, and enable output
   sgtl5000_1.enable();
   sgtl5000_1.inputSelect(myInput);
   sgtl5000_1.volume(0.8);
-  sgtl5000_1.lineInLevel(5);
+  sgtl5000_1.lineInLevel(10, 10);
   sgtl5000_1.adcHighPassFilterDisable();  //reduce noise.  https://forum.pjrc.com/threads/27215-24-bit-audio-boards?p=78831&viewfull=1#post78831
 
   // setup other features
