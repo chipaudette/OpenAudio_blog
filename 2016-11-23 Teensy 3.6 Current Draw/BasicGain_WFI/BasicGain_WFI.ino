@@ -2,7 +2,8 @@
    BasicGain
 
    Created: Chip Audette, Nov 2016
-   Purpose: Process audio by applying gain
+   Purpose: Process audio by applying gain.
+            Also demonstrates WFI command in loop() to save power.
 
    Uses Teensy Audio Adapter.
    Assumes microphones (or whatever) are attached to the LINE IN
