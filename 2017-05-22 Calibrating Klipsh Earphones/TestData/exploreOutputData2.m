@@ -87,6 +87,10 @@ hold on
 for I=1:size(t_sweep_sec,1);
     plot(t_sweep_sec(I,1)*[1 1],ylim,'g:');
     plot(t_sweep_sec(I,2)*[1 1],ylim,'r:');
+    yl=ylim;
+    text(mean(t_sweep_sec(I,:)),yl(2)-0.05*diff(yl), ...
+        num2str(drive_amplitude(I)),...
+        'VerticalAlignment','Top','HorizontalAlignment','center');
 end
 hold off
     
@@ -98,6 +102,12 @@ if (data_type==2); norm_fac = 1; cl = 0 + [-diff(cl) 0]; end
 set(gca,'Clim',cl);
 xlim(xl);
 ylim([0 22000]);
+for I=1:size(t_sweep_sec,1);
+    yl=ylim;
+    text(mean(t_sweep_sec(I,:)),yl(2)-0.05*diff(yl), ...
+        num2str(drive_amplitude(I)),'color','white',...
+        'VerticalAlignment','Top','HorizontalAlignment','center');
+end
 
 subplot(2,2,3);
 if (0)
@@ -115,6 +125,13 @@ switch data_type
         ylabel('Headphone Voltage (dBV)');
 end
 title(fname,'Interpreter','none');
+for I=1:size(t_sweep_sec,1);
+    yl=ylim;
+    x = t_sweep_sec(I,1) + 0.4*diff(t_sweep_sec(I,:));
+    text(x,yl(1)+0.05*diff(yl), ...
+        num2str(drive_amplitude(I)),...
+        'VerticalAlignment','Bottom','HorizontalAlignment','center');
+end
 
 subplot(2,2,4);
 if (0)
