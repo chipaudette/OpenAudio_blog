@@ -5,6 +5,8 @@
 2017-01-18 Basic Compressor/Testing/OutputSignals/*
 2017-01-18 Basic Compressor/Testing/InputSignals/InputLong*
 
+# Audition pk files
+*.pk
 
 
 # Windows image file caches
