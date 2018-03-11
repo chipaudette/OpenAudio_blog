@@ -118,7 +118,7 @@ void loop(void)
     if (step != prev_step) {
       prev_step = step;
       count++;
-      if (count < 10) {
+      if (count < 3) {
         switch (count % 5) {
           case 0:
             Serial.println("Running...input gain 0");
@@ -147,6 +147,7 @@ void loop(void)
     }
     continueRecording();
   } else {
+    stopRecording();
     Serial.println("Complete.");
     delay(3000);
   }
