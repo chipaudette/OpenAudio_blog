@@ -8,14 +8,27 @@ Volt_Pa=[];
 data_type = 1;  %1 = Pa, 2=Volt
 t_start_sec = [];
 chan=1;
-switch 11
+switch 101
     case 11
         fname = '11-SyntheticOutputSweep_0.0316V_PaA.wav';
         Volt_Pa = 0.0316;
         t_start_sec = 1.903 -1.0 - (3.7e-3)/2;
         drive_amplitude = [0.1 0.3 0.5 0.7 1.0]/2;
         earphone_type = 'Klipsch S4';
-    
+    case 101    
+        fname = '101-Klipsch_0.0316V_PaA.wav';
+        Volt_Pa = 0.0316;
+        t_start_sec = 8.331 -1.0 - (3.7e-3)/2;
+        drive_amplitude = [0.05 0.1 0.25 0.5 1.0];
+        earphone_type = 'Klipsch S4'; 
+        chan = 1;
+    case 102    
+        fname = '102-Etymotic_0.0316V_PaA.wav';
+        Volt_Pa = 0.0316;
+        t_start_sec = 7.723 -1.0 - (3.7e-3)/2;
+        drive_amplitude = [0.05 0.1 0.25 0.5 1.0];
+        earphone_type = 'Etymotic HF5'; 
+        chan = 1;      
 end
 
 %define sweep params

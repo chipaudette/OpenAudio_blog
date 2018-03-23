@@ -39,7 +39,7 @@ params.n_cycles = 5;
 params.drive_amplitude = drive_amplitude;
 params.lim_drive_ind = 3;  %index into vector above, where it starts to distort
 
-addpath('..\functions\');
+%addpath('..\functions\');
 
 %calibrate
 cal_scale_fac = 0.943;
