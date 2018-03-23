@@ -32,9 +32,7 @@ int t_lox = 100;    //starting frequency for tone sweep, Hz
 int t_hix = 16000;  //end frequency for the tone sweep, Hz
 float t_timex = 10;  // Length of time for the sweep, seconds
 
-// <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>
-//const float input_gain_dB = 20.0f; //gain on the microphone
-float vol_knob_gain_dB = 0.0;      //will be overridden by volume knob
+// define setup()...this is run once when the hardware starts up
 void setup(void)
 {
   //Open serial link for debugging
@@ -53,6 +51,7 @@ void setup(void)
   Serial.println("Setup complete.");
 }
 
+// define loop()...this is run over-and-over while the device is powered
 void loop(void)
 {
   
