@@ -42,7 +42,7 @@ figure;setFigureTallWide;
 pos=get(gcf,'position');set(gcf,'position',[pos(1) pos(2) 1000 630]);
 subplot(2,2,1);
 semilogx(freq_Hz,all_scale_dBFS_94dBSPL,'o-','linewidth',2,'markersize',4);
-xlim([100 10000]);set(gca,'XTick',[125 250 500 1000 2000 4000 8000 16000]);
+xlim([100 20000]);set(gca,'XTick',[125 250 500 1000 2000 4000 8000 16000]);
 xlabel('3rd Octave Band (Hz)');
 ylabel({'Digital Value (dBFS)';'for 94 dBSPL at 0 dB Gain'});
 title('Calibration of Tympan Input (Mic+ADC)');
