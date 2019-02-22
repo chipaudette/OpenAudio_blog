@@ -3,6 +3,7 @@
   Based on ToneSweep in Audio library for Teensy
 
   Chip Audette, OpenAudio 2017
+    Updated Feb 2018 to use F32 versions of all functions and not Audio.h
   
   The user specifies the start and end frequencies (which can sweep up or down)
   and the length of time of the sweep.  The program steps through different digital
@@ -14,23 +15,24 @@
 
 */
 
-#include <Audio.h>
+//#include <Audio.h>
 #include <Tympan_Library.h>
 
 // Create the audio library objects that we'll use
-AudioControlTLV320AIC3206 audioHardware;    //from the Tympan library
-AudioSynthToneSweep toneSweep;               //from the Teensy Audio library
-AudioOutputI2S      audioOutput;            //from the Teensy Audio library
+TympanPins                tympPins(TYMPAN_REV_C);        //TYMPAN_REV_C or TYMPAN_REV_D
+TympanBase                audioHardware(tympPins);
+AudioSynthToneSweep_F32   toneSweep;               //from the Teensy Audio library
+AudioOutputI2S_F32        audioOutput;            //from the Teensy Audio library
 
 // Create the audio connections from the tonesweep object to the audio output object
-AudioConnection patchCord1(toneSweep, 0, audioOutput, 0);  //connect to left
-AudioConnection patchCord2(toneSweep, 0, audioOutput, 1);  //connect to right
+AudioConnection_F32 patchCord1(toneSweep, 0, audioOutput, 0);  //connect to left
+AudioConnection_F32 patchCord2(toneSweep, 0, audioOutput, 1);  //connect to right
 
 // Define the parameters of the tone sweep
 float t_ampx;       //variable that will be used to set the amplitude of the sweep
-int t_lox = 100;    //starting frequency for tone sweep, Hz
-int t_hix = 16000;  //end frequency for the tone sweep, Hz
-float t_timex = 10;  // Length of time for the sweep, seconds
+float t_lox = 100.0;    //starting frequency for tone sweep, Hz
+float t_hix = 16000.0;  //end frequency for the tone sweep, Hz
+float t_timex = 10.0;  // Length of time for the sweep, seconds
 
 // define setup()...this is run once when the hardware starts up
 void setup(void)
@@ -40,7 +42,7 @@ void setup(void)
   Serial.println("ToneSweep_Tympan: starting setup()...");
 
   //allocate audio memory
-  AudioMemory(10);
+  AudioMemory_F32(20);  //allocate Float32 audio data blocks (primary memory used for audio processing)
 
   //start the audio hardware
   audioHardware.enable();
@@ -83,7 +85,7 @@ void loop(void)
     Serial.println(t_ampx);
         
     if(!toneSweep.play(t_ampx,t_lox,t_hix,t_timex)) {
-      Serial.println("AudioSynthToneSweep - begin failed");
+      Serial.println("ToneSweep_Tympan - begin failed");
       while(1);
     }
     
