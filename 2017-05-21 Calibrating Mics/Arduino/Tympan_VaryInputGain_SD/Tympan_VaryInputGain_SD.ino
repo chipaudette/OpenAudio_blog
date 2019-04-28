@@ -27,13 +27,13 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
-#include <Tympan_Library.h>  //AudioControlTLV320AIC3206 lives here
+#include <Tympan_Library.h>  //AudioControlAIC3206 lives here
 
 // change this to match your SD shield or module;
 const int chipSelect = BUILTIN_SDCARD;
 
 // define audio classes and connections
-AudioControlTLV320AIC3206       tlv320aic3206_1;
+AudioControlAIC3206       tlv320aic3206_1;
 
 // GUItool: begin automatically generated code
 AudioInputI2S            i2s2;           //xy=105,63
@@ -61,7 +61,7 @@ void setup(void)
 
   //begin the serial comms
   Serial.begin(115200);  delay(500);
-  Serial.println("Tympan_TLV320AIC3206: starting...");
+  Serial.println("Tympan_AIC3206: starting...");
 
   // Setup the TLV320
   tlv320aic3206_1.enable(); // activate AIC

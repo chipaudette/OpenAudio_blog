@@ -32,7 +32,7 @@ AudioOutputI2S      audioOutput;        // audio shield: headphones & line-out
 AudioConnection patchCord1(myEffect, 0, audioOutput, 0);
 AudioConnection patchCord2(myEffect, 0, audioOutput, 1);
 
-AudioControlTLV320AIC3206 audioHardware;
+AudioControlAIC3206 audioHardware;
 
 
 float t_ampx;

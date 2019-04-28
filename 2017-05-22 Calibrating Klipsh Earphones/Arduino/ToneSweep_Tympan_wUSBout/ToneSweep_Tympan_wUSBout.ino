@@ -37,7 +37,7 @@ AudioConnection patchCord3(myEffect, 0, usb_out, 0);
 AudioConnection patchCord4(myEffect, 0, usb_out, 1);
 AudioConnection patchCord5(myEffect, 0, rms, 0);
 
-AudioControlTLV320AIC3206 audioHardware;
+AudioControlAIC3206 audioHardware;
 
 
 float t_ampx;

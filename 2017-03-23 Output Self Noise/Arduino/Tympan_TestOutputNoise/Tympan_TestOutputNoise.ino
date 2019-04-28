@@ -21,10 +21,10 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
-#include <Tympan_Library.h>  //AudioControlTLV320AIC3206 lives here
+#include <Tympan_Library.h>  //AudioControlAIC3206 lives here
 
 // define audio classes and connections
-AudioControlTLV320AIC3206       tlv320aic3206_1;
+AudioControlAIC3206       tlv320aic3206_1;
 AudioSynthWaveformSine    sine1, sine2;
 AudioOutputI2S            audioOutput;
 AudioConnection           patchCord1(sine1, 0, audioOutput, 0);
@@ -38,7 +38,7 @@ void setup(void)
 
   //begin the serial comms
   Serial.begin(115200);  delay(500);
-  Serial.println("Tympan_TLV320AIC3206: starting...");
+  Serial.println("Tympan_AIC3206: starting...");
   
   // Setup the TLV320
   tlv320aic3206_1.enable(); // activate AIC

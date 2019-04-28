@@ -35,7 +35,7 @@ AudioConnection patchCord1(toneSweep, 0, gainEffect, 0);
 AudioConnection patchCord2(gainEffect, 0, audioOutput, 0);
 AudioConnection patchCord3(gainEffect, 0, audioOutput, 1);
 
-AudioControlTLV320AIC3206 audioHardware;
+AudioControlAIC3206 audioHardware;
 
 
 float t_ampx;
