@@ -27,7 +27,7 @@ params.drive_amplitude = drive_amplitude; %looking at the USB stream, they're on
 params.lim_drive_ind = 3;  %index into vector above
 params.f_start_Hz = 100;
 params.f_end_Hz = 16000;
-addpath('..\functions\');
+%addpath('..\functions\');
 
 %calibrate
 cal_scale_fac = 0.943;

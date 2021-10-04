@@ -5,7 +5,7 @@ in_gain_dB = [];
 p_root1 = 'C:\Creare_Data\Cool Aid\Olympus Stuff\Data\20161022 Teensy 3.6 Self Noise (Home)\';
 p_root2 = 'C:\Creare_Data\Cool Aid\Olympus Stuff\Data\20170223 CoolAid Pre-AAS conference\';
 
-switch 4
+switch 3
     case 1
         % plot just those cases with similar full scale values, 0.56 pp vs 0.48 pp
         all_cases = [3 13 22 32 42]; summary_mode = 1;summary_types={'Teensy Audio' 'Tympan Audio'};
@@ -19,8 +19,19 @@ switch 4
             summary_xlt{I} = {['Line-In Level = ' num2str(line_in_levels(I))];
                               ['Max In = ' num2str(max_in_Vrms(I),2) ' Vrms']};
         end;
+    case 3
+        % plot  Tympan Cases
+        all_cases = [31 32 33 34 41 42 43 44]; 
+        summary_mode = 3; summary_types = {'Tympan (USB)' 'Tympan (SD)'};
+        teensy_line_in = [0 5 10 15];
+        teensy_gain_dB = 10*log10((3.12./[3.12 1.33 0.56 0.24]).^2);
+        tympan_gain_dB = [0 10 20 30];
+        line_in_levels = [tympan_gain_dB(:);tympan_gain_dB(:)];
+        max_in_Vrms = [ [cal_Tympan_V_atFS / sqrt(2) ./ sqrt(10.^(0.1*tympan_gain_dB(:)))];
+                        [cal_Tympan_V_atFS / sqrt(2) ./ sqrt(10.^(0.1*tympan_gain_dB(:)))]; ]
+        summary_xlt={};
     case 4
-        % plot all Tympan Cases
+        % plot Teensy vs Tympan Cases
         all_cases = [11 12 13 14 31 32 33 34 41 42 43 44]; 
         summary_mode = 3; summary_types = {'Teensy (no ADC HP)' 'Tympan (USB)' 'Tympan (SD)'};
         teensy_line_in = [0 5 10 15];
@@ -432,11 +443,13 @@ if summary_mode == 3
     
     yl=ylim;
     y = 20*log10(all_rms_fwav_V);
-    I=find(type == 1);
-    for J=1:length(I);
-        text(x(I(J)),y(I(J))+0.05*diff(yl),{['In ' num2str(teensy_line_in(J))]}, ...
-            'verticalalignment','bottom','horizontalalignment','center');
-    end    
+    if (summary_types{1}(1:3) == 'Tee')
+        I=find(type == 1);
+        for J=1:length(I);
+            text(x(I(J)),y(I(J))+0.05*diff(yl),{['In ' num2str(teensy_line_in(J))]}, ...
+                'verticalalignment','bottom','horizontalalignment','center');
+        end
+    end
     I=find(type == ntypes);
     for J=1:length(I);
         %if J > 2
@@ -470,10 +483,12 @@ if summary_mode == 3
 
     yl=ylim;
     y = dyn_range_dBV;
-    I=find(type == 1);
-    for J=1:length(I);
-        text(x(I(J)),y(I(J))+0.05*diff(yl),[num2str(y(I(J)),3)], ...
-            'verticalalignment','bottom','horizontalalignment','center');
+    if (summary_types{1}(1:3) == 'Tee')
+        I=find(type == 1);
+        for J=1:length(I);
+            text(x(I(J)),y(I(J))+0.05*diff(yl),[num2str(y(I(J)),3)], ...
+                'verticalalignment','bottom','horizontalalignment','center');
+        end
     end
     I=find(type == ntypes);
     for J=1:length(I);

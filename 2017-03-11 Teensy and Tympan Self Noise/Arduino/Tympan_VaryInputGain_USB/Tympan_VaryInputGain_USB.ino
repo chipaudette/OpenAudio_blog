@@ -17,10 +17,10 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
-#include <Tympan_Library.h>  //AudioControlTLV320AIC3206 lives here
+#include <Tympan_Library.h>  //AudioControlAIC3206 lives here
 
 // define audio classes and connections
-AudioControlTLV320AIC3206       tlv320aic3206_1;
+AudioControlAIC3206       tlv320aic3206_1;
 AudioInputI2S             audioInput; 
 AudioOutputI2S            audioOutput;
 AudioOutputUSB            usb_out;  // Be sure to enable USB AUDIO!!! (Tools -> USB Type -> Serial + MIDI + Audio
@@ -37,7 +37,7 @@ void setup(void)
 
   //begin the serial comms
   Serial.begin(115200);  delay(500);
-  Serial.println("Tympan_TLV320AIC3206: starting...");
+  Serial.println("Tympan_AIC3206: starting...");
   
   // Setup the TLV320
   tlv320aic3206_1.enable(); // activate AIC

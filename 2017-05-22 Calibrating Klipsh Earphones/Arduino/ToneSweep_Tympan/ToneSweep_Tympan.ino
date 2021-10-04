@@ -1,50 +1,40 @@
 /*
-  Demo of the audio sweep function.
-  The user specifies the amplitude,
-  start and end frequencies (which can sweep up or down)
-  and the length of time of the sweep.
-   
-FMI:
-The audio board uses the following pins.
- 6 - MEMCS
- 7 - MOSI
- 9 - BCLK
-10 - SDCS
-11 - MCLK
-12 - MISO
-13 - RX
-14 - SCLK
-15 - VOL
-18 - SDA
-19 - SCL
-22 - TX
-23 - LRCLK
+  ToneSweep_Tympan
+  Based on ToneSweep in Audio library for Teensy
+
+  Chip Audette, OpenAudio 2017
+    Updated Feb 2018 to use F32 versions of all functions and not Audio.h
+  
+  The user specifies the start and end frequencies (which can sweep up or down)
+  and the length of time of the sweep.  The program steps through different digital
+  amplitudes so that you can see where distortion begins.
+
+  See example usage: http://openaudio.blogspot.com/2017/05/calibrating-my-earphones-with-tympan.html
+
+  MIT License, Use at your own risk.
 
 */
 
-#include <Audio.h>
+//#include <Audio.h>
 #include <Tympan_Library.h>
 
-AudioSynthToneSweep myEffect;
-AudioOutputI2S      audioOutput;        // audio shield: headphones & line-out
+// Create the audio library objects that we'll use
+TympanPins                tympPins(TYMPAN_REV_C);        //TYMPAN_REV_C or TYMPAN_REV_D
+TympanBase                audioHardware(tympPins);
+AudioSynthToneSweep_F32   toneSweep;               //from the Teensy Audio library
+AudioOutputI2S_F32        audioOutput;            //from the Teensy Audio library
 
-// The tone sweep goes to left and right channels
-AudioConnection patchCord1(myEffect, 0, audioOutput, 0);
-AudioConnection patchCord2(myEffect, 0, audioOutput, 1);
+// Create the audio connections from the tonesweep object to the audio output object
+AudioConnection_F32 patchCord1(toneSweep, 0, audioOutput, 0);  //connect to left
+AudioConnection_F32 patchCord2(toneSweep, 0, audioOutput, 1);  //connect to right
 
-AudioControlTLV320AIC3206 audioHardware;
+// Define the parameters of the tone sweep
+float t_ampx;       //variable that will be used to set the amplitude of the sweep
+float t_lox = 100.0;    //starting frequency for tone sweep, Hz
+float t_hix = 16000.0;  //end frequency for the tone sweep, Hz
+float t_timex = 10.0;  // Length of time for the sweep, seconds
 
-
-float t_ampx;
-int t_lox = 100;
-int t_hix = 16000;
-
-// Length of time for the sweep in seconds
-float t_timex = 10;
-
-// <<<<<<<<<<<<<<>>>>>>>>>>>>>>>>
-const float input_gain_dB = 20.0f; //gain on the microphone
-float vol_knob_gain_dB = 0.0;      //will be overridden by volume knob
+// define setup()...this is run once when the hardware starts up
 void setup(void)
 {
   //Open serial link for debugging
@@ -52,56 +42,55 @@ void setup(void)
   Serial.println("ToneSweep_Tympan: starting setup()...");
 
   //allocate audio memory
-  AudioMemory(10);
+  AudioMemory_F32(20);  //allocate Float32 audio data blocks (primary memory used for audio processing)
 
   //start the audio hardware
   audioHardware.enable();
 
-  //Choose the desired input
-  //audioHardware.inputSelect(TYMPAN_INPUT_ON_BOARD_MIC); // use the on board microphones
-  audioHardware.inputSelect(TYMPAN_INPUT_JACK_AS_MIC); // use the microphone jack - defaults to mic bias 2.5V
-  // audioHardware.inputSelect(TYMPAN_INPUT_JACK_AS_LINEIN); // use the microphone jack - defaults to mic bias OFF
-
-  //Set the desired volume levels
+  //Set the baseline volume levels
   audioHardware.volume_dB(0);                   // headphone amplifier.  -63.6 to +24 dB in 0.5dB steps.
-  audioHardware.setInputGain_dB(input_gain_dB); // set input volume, 0-47.5dB in 0.5dB setps
-
+  
   Serial.println("Setup complete.");
-
 }
 
+// define loop()...this is run over-and-over while the device is powered
 void loop(void)
 {
   
-  
-  for (int Iloop=0; Iloop < 5; Iloop++) {
-    delay(1000);
-
+  //loop over five different loudnesses
+  for (int Iloop=0; Iloop < 6; Iloop++) {
+    delay(1000);  //delay for a moment to provide seperation between the sweeps
     
     switch (Iloop) {
       case 0:
-        t_ampx = 0.1;
+        t_ampx = 0.1;  //For some reason, the AudioSynthToneSweep object cuts this in half, so really it's digital +/-0.05
         break;
       case 1:
-        t_ampx = 0.3;
+        t_ampx = 0.3;  //For some reason, the AudioSynthToneSweep object cuts this in half, so really it's digital +/-0.15
         break;
       case 2:
-        t_ampx = 0.5;
+        t_ampx = 0.5;  //For some reason, the AudioSynthToneSweep object cuts this in half, so really it's digital +/-0.25
         break;
       case 3:
-        t_ampx = 0.7;
+        t_ampx = 0.7;  //For some reason, the AudioSynthToneSweep object cuts this in half, so really it's digital +/-0.35
         break;        
       case 4:
-        t_ampx = 1.0;
+        t_ampx = 1.0;  //For some reason, the AudioSynthToneSweep object cuts this in half, so really it's digital +/-0.5
+        break;
+      case 5:
+        t_ampx = 2.0;  //For some reason, the AudioSynthToneSweep object cuts this in half, so really it's digital +/-1.0
+        break;
     }
+    Serial.print("Beginning tone sweep at digital amplitude of ");
+    Serial.println(t_ampx);
         
-    if(!myEffect.play(t_ampx,t_lox,t_hix,t_timex)) {
-      Serial.println("AudioSynthToneSweep - begin failed");
+    if(!toneSweep.play(t_ampx,t_lox,t_hix,t_timex)) {
+      Serial.println("ToneSweep_Tympan - begin failed");
       while(1);
     }
     
     // wait for the sweep to end
-    while(myEffect.isPlaying());
+    while(toneSweep.isPlaying());
     
   }
 }

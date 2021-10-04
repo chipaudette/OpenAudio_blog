@@ -27,7 +27,7 @@ end
 if (nargin == 2)
   N = 3; 
 end
-if (Fc > 0.70*(Fs/2))
+if (Fc > 0.88*(Fs/2))
   error('Design not possible. Check frequencies.');
 end
 
@@ -40,7 +40,11 @@ beta = pi/2/N/sin(pi/2/N);
 alpha = (1+sqrt(1+8*beta^2))/4/beta;
 W1 = Fc/(Fs/2)*sqrt(1/2)/alpha; 
 W2 = Fc/(Fs/2)*sqrt(2)*alpha;
-[B,A] = butter(N,[W1,W2]); 
+if W2 > 0.98
+    [B,A]=butter(N,W1,'high');
+else
+    [B,A] = butter(N,[W1,W2]); 
+end
 
 
 
